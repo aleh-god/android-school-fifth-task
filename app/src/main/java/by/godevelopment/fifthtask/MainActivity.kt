@@ -3,7 +3,9 @@ package by.godevelopment.fifthtask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.godevelopment.fifthtask.ui.main.MainFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
