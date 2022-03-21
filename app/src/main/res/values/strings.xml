@@ -3,4 +3,16 @@
     <string name="title_activity_maps">Maps Fragment</string>
     <string name="alert_error_loading">Load data error!</string>
     <string name="snackbar_btn_reload">Reload</string>
+
+    <string name="normal_map">Normal Map</string>
+    <string name="hybrid_map">Hybrid Map</string>
+    <string name="satellite_map">Satellite Map</string>
+    <string name="terrain_map">Terrain Map</string>
+    <string name="lat_long_snippet">Lat: %1$.5f, Long: %2$.5f</string>
+    <string name="dropped_pin">Dropped Pin</string>
+    <string name="poi">poi</string>
+    <string name="usecase_type_atm">ATM</string>
+    <string name="usecase_type_filial">Filial</string>
+    <string name="usecase_type_infobox">Infobox</string>
+    <string name="usecase_text_separator">" "</string>
 </resources>

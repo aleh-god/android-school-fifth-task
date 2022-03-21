@@ -52,6 +52,7 @@ class MainFragment : Fragment() {
             }
         }
         setupEvent()
+        setupToolbar()
         return binding.root
     }
 
@@ -64,14 +65,18 @@ class MainFragment : Fragment() {
                     val zoomLevel = ZOOM_LEVEL
                     val homeLatLng = LatLng(START_POINT_LAT, START_POINT_LNG)
                     uiState.data.forEach { model ->
-                        googleMap.addMarker(
-                            MarkerOptions()
-                                .position(
-                                    LatLng(model.latitude, model.longitude)
+                        model.latitude?.let { latitude ->
+                            model.longitude?.let { longitude ->
+                                googleMap.addMarker(
+                                    MarkerOptions()
+                                        .position(
+                                            LatLng(latitude, longitude)
+                                        )
+                                        .title(model.tittle_type)
+                                        .snippet(model.snippet_address)
                                 )
-                                .title(model.tittle_text)
-                                .snippet(model.snippet_text)
-                        )
+                            }
+                        }
                     }
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel))
                 }
@@ -87,6 +92,33 @@ class MainFragment : Fragment() {
                     .setAction(getString(R.string.snackbar_btn_reload))
                     { mainViewModel.fetchGeographicData() }
                     .show()
+            }
+        }
+    }
+
+    private fun setupToolbar() {
+        binding.toolbar.apply {
+            inflateMenu(R.menu.toolbar_menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.normal_map -> {
+                        googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+                        true
+                    }
+                    R.id.hybrid_map -> {
+                        googleMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+                        true
+                    }
+                    R.id.satellite_map -> {
+                        googleMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                        true
+                    }
+                    R.id.terrain_map -> {
+                        googleMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                        true
+                    }
+                    else -> super.onOptionsItemSelected(it)
+                }
             }
         }
     }

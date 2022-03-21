@@ -6,5 +6,8 @@ import javax.inject.Inject
 class BankRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource
 ) : BankRepository {
-    override suspend fun getAllData() = remoteDataSource.getAllData()
+
+    override suspend fun getAllAtm() = remoteDataSource.getAllAtm()
+    override suspend fun getAllFilial() = remoteDataSource.getAllFilial()
+    override suspend fun getAllInfobox() = remoteDataSource.getAllInfobox()
 }
