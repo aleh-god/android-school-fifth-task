@@ -12,7 +12,7 @@ class GetAllGeographicDataUseCase @Inject constructor(
     private val bankRepository: BankRepository,
     private val stringHelper: StringHelper
 ) {
-    suspend operator fun invoke(): Flow<List<GeographicPointModel>> = flow {
+    operator fun invoke(): Flow<List<GeographicPointModel>> = flow {
         val fetchList = mutableListOf<Deferred<List<GeographicPointModel>>>()
         coroutineScope {
             Log.i(TAG, "GetAllGeographicDataUseCas .launch")
@@ -22,7 +22,9 @@ class GetAllGeographicDataUseCase @Inject constructor(
                 bankRepository.getAllAtm().data.aTM.map {
                     GeographicPointModel(
                         id = count++,
-                        tittle_type = stringHelper.getString(R.string.usecase_type_atm),
+                        tittle_type = stringHelper.getString(R.string.usecase_type_atm) +
+                                stringHelper.getString(R.string.usecase_text_separator) +
+                                it.currentStatus,
                         snippet_address =
                                 it.address?.streetName +
                                 stringHelper.getString(R.string.usecase_text_separator) +
@@ -58,7 +60,9 @@ class GetAllGeographicDataUseCase @Inject constructor(
                 bankRepository.getAllInfobox().map {
                     GeographicPointModel(
                         id = count++,
-                        tittle_type = stringHelper.getString(R.string.usecase_type_infobox),
+                        tittle_type = stringHelper.getString(R.string.usecase_type_infobox) +
+                                stringHelper.getString(R.string.usecase_text_separator) +
+                                it.infType,
                         snippet_address =
                                 it.address +
                                 stringHelper.getString(R.string.usecase_text_separator) +

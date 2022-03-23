@@ -1,18 +1,20 @@
 package by.godevelopment.fifthtask.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.godevelopment.fifthtask.R
-import by.godevelopment.fifthtask.commons.START_POINT_LAT
-import by.godevelopment.fifthtask.commons.START_POINT_LNG
-import by.godevelopment.fifthtask.commons.ZOOM_LEVEL
+import by.godevelopment.fifthtask.commons.*
 import by.godevelopment.fifthtask.databinding.MainFragmentBinding
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
@@ -30,7 +32,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var googleMap: GoogleMap
-    lateinit var mMapView: MapView
+    private lateinit var mMapView: MapView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +49,6 @@ class MainFragment : Fragment() {
             }
             getMapAsync {
                 googleMap = it
-                // googleMap.isMyLocationEnabled
                 setupUi()
             }
         }
@@ -68,12 +69,16 @@ class MainFragment : Fragment() {
                         model.latitude?.let { latitude ->
                             model.longitude?.let { longitude ->
                                 googleMap.addMarker(
-                                    MarkerOptions()
-                                        .position(
-                                            LatLng(latitude, longitude)
+                                    MarkerOptions().apply {
+                                        this.position(LatLng(latitude, longitude))
+                                            .title(model.tittle_type)
+                                            .snippet(model.snippet_address)
+                                        if (model.id == KEY_ID_CENTER_POINT) this.icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_GREEN
+                                            )
                                         )
-                                        .title(model.tittle_type)
-                                        .snippet(model.snippet_address)
+                                    }
                                 )
                             }
                         }
@@ -99,6 +104,8 @@ class MainFragment : Fragment() {
     private fun setupToolbar() {
         binding.toolbar.apply {
             inflateMenu(R.menu.toolbar_menu)
+            setTitle(R.string.app_name)
+            subtitle = "$KEY_TAKE_POINTS_NAMBER" + context.getString(R.string.toolbar_subtitle)
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.normal_map -> {

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.godevelopment.fifthtask.R
 import by.godevelopment.fifthtask.commons.TAG
+import by.godevelopment.fifthtask.domain.CalcDistanceBetweenPointsAndCenterUseCase
 import by.godevelopment.fifthtask.domain.GeographicPointModel
 import by.godevelopment.fifthtask.domain.GetAllGeographicDataUseCase
 import by.godevelopment.fifthtask.domain.StringHelper
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getAllGeographicDataUseCase: GetAllGeographicDataUseCase,
+//    private val getAllGeographicDataUseCase: GetAllGeographicDataUseCase,
+    private val calcDistanceBetweenPointsAndCenterUseCase: CalcDistanceBetweenPointsAndCenterUseCase,
     private val stringHelper: StringHelper
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(null)
@@ -31,7 +33,7 @@ class MainViewModel @Inject constructor(
 
     fun fetchGeographicData() {
         viewModelScope.launch {
-            getAllGeographicDataUseCase()
+            calcDistanceBetweenPointsAndCenterUseCase()
                 .onStart {
                     Log.i(TAG, "viewModelScope.launch: .onStart")
                     UiState(
@@ -39,7 +41,7 @@ class MainViewModel @Inject constructor(
                     )
                 }
                 .catch { exception ->
-                    Log.i(TAG, "TableViewViewModel: .catch ${exception.message}")
+                    Log.i(TAG, "viewModelScope.catch ${exception.message}")
                     _uiState.value = UiState(
                         isFetchingData = false
                     )
@@ -47,7 +49,7 @@ class MainViewModel @Inject constructor(
                     _uiEvent.emit(stringHelper.getString(R.string.alert_error_loading))
                 }
                 .collect {
-                    Log.i(TAG, "viewModelScope.launch: .collect = ${it.size}")
+                    Log.i(TAG, "viewModelScope.collect = ${it.size}")
                     _uiState.value = null
                     _uiState.value = UiState(
                         data = it
