@@ -5,10 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.godevelopment.fifthtask.R
 import by.godevelopment.fifthtask.commons.TAG
-import by.godevelopment.fifthtask.domain.CalcDistanceBetweenPointsAndCenterUseCase
-import by.godevelopment.fifthtask.domain.GeographicPointModel
-import by.godevelopment.fifthtask.domain.GetAllGeographicDataUseCase
-import by.godevelopment.fifthtask.domain.StringHelper
+import by.godevelopment.fifthtask.domain.helpers.StringHelper
+import by.godevelopment.fifthtask.domain.models.GeographicPointModel
+import by.godevelopment.fifthtask.domain.usecase.PrepareListOfPointsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -17,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-//    private val getAllGeographicDataUseCase: GetAllGeographicDataUseCase,
-    private val calcDistanceBetweenPointsAndCenterUseCase: CalcDistanceBetweenPointsAndCenterUseCase,
+    private val prepareListOfPointsUseCase: PrepareListOfPointsUseCase,
     private val stringHelper: StringHelper
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(null)
@@ -33,7 +31,7 @@ class MainViewModel @Inject constructor(
 
     fun fetchGeographicData() {
         viewModelScope.launch {
-            calcDistanceBetweenPointsAndCenterUseCase()
+            prepareListOfPointsUseCase()
                 .onStart {
                     Log.i(TAG, "viewModelScope.launch: .onStart")
                     UiState(

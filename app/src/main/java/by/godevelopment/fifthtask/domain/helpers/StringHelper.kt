@@ -1,4 +1,4 @@
-package by.godevelopment.fifthtask.domain
+package by.godevelopment.fifthtask.domain.helpers
 
 import android.content.Context
 import androidx.annotation.StringRes

@@ -1,4 +1,4 @@
-package by.godevelopment.fifthtask.data.dataentityfilial
+package by.godevelopment.fifthtask.data.dataentity.dataentityfilial
 
 
 import com.squareup.moshi.Json

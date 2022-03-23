@@ -1,4 +1,4 @@
-package by.godevelopment.fifthtask.data.dataentityinfobox
+package by.godevelopment.fifthtask.data.dataentity.dataentityinfobox
 
 
 import com.squareup.moshi.Json

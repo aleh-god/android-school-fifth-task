@@ -1,4 +1,4 @@
-package by.godevelopment.fifthtask.domain
+package by.godevelopment.fifthtask.domain.models
 
 data class GeographicPointModel(
     val id: Int,

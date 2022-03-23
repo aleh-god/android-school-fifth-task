@@ -1,8 +1,11 @@
-package by.godevelopment.fifthtask.domain
+package by.godevelopment.fifthtask.domain.usecase
 
 import android.util.Log
 import by.godevelopment.fifthtask.R
 import by.godevelopment.fifthtask.commons.TAG
+import by.godevelopment.fifthtask.domain.BankRepository
+import by.godevelopment.fifthtask.domain.models.GeographicPointModel
+import by.godevelopment.fifthtask.domain.helpers.StringHelper
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
