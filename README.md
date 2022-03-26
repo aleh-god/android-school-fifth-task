@@ -9,4 +9,4 @@
 5. MVVM   
 6. SOLID, Clean Architecture
 
-<img alt="ImageGalleryDemo" src="https://github.com/aleh-god/fifth-task-maps-learn/blob/master/FifthTaskDemo.gif" />
+<img alt="ImageGalleryDemo" src="https://github.com/aleh-god/android-school-fifth-task/blob/master/FifthTaskDemo.gif" />
