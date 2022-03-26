@@ -60,7 +60,6 @@ class MainFragment : Fragment() {
     private fun setupUi() {
         lifecycleScope.launchWhenStarted {
             mainViewModel.uiState.collect { uiState ->
-                uiState?.let {
                     if (uiState.isFetchingData) binding.progressBar.visibility = View.VISIBLE
                     else binding.progressBar.visibility = View.GONE
                     val zoomLevel = ZOOM_LEVEL
@@ -70,10 +69,10 @@ class MainFragment : Fragment() {
                             model.longitude?.let { longitude ->
                                 googleMap.addMarker(
                                     MarkerOptions().apply {
-                                        this.position(LatLng(latitude, longitude))
-                                            .title(model.tittle_type)
-                                            .snippet(model.snippet_address)
-                                        if (model.id == KEY_ID_CENTER_POINT) this.icon(
+                                        position(LatLng(latitude, longitude))
+                                        title(model.tittle_type)
+                                        snippet(model.snippet_address)
+                                        if (model.id == KEY_ID_CENTER_POINT) icon(
                                             BitmapDescriptorFactory.defaultMarker(
                                                 BitmapDescriptorFactory.HUE_GREEN
                                             )
@@ -84,7 +83,6 @@ class MainFragment : Fragment() {
                         }
                     }
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, zoomLevel))
-                }
             }
         }
     }

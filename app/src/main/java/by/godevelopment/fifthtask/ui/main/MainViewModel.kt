@@ -9,6 +9,7 @@ import by.godevelopment.fifthtask.domain.helpers.StringHelper
 import by.godevelopment.fifthtask.domain.models.GeographicPointModel
 import by.godevelopment.fifthtask.domain.usecase.PrepareListOfPointsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,22 +20,25 @@ class MainViewModel @Inject constructor(
     private val prepareListOfPointsUseCase: PrepareListOfPointsUseCase,
     private val stringHelper: StringHelper
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(null)
-    val uiState: StateFlow<UiState?> = _uiState
+    private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(UiState())
+    val uiState: StateFlow<UiState> = _uiState
 
     private val _uiEvent  = MutableSharedFlow<String>(0)
     val uiEvent: SharedFlow<String> = _uiEvent
+
+    private var fetchJob: Job? = null
 
     init {
         fetchGeographicData()
     }
 
     fun fetchGeographicData() {
-        viewModelScope.launch {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
             prepareListOfPointsUseCase()
                 .onStart {
                     Log.i(TAG, "viewModelScope.launch: .onStart")
-                    UiState(
+                    _uiState.value = UiState(
                         isFetchingData = true
                     )
                 }
@@ -48,7 +52,6 @@ class MainViewModel @Inject constructor(
                 }
                 .collect {
                     Log.i(TAG, "viewModelScope.collect = ${it.size}")
-                    _uiState.value = null
                     _uiState.value = UiState(
                         data = it
                     )
